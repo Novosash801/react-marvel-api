@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import ErrorMessage from '../ErrorImg/ErrorImg';
 import Spinner from '../spinner/Spinner';
 import useMarvelService from '../../services/MarvelService';
+import { CHARACTERS_PAGE_SIZE } from '../../constants';
 
 const CharList = ({ onCharSelected }) => {
   const [charList, setCharList] = useState([]);
@@ -17,8 +18,8 @@ const CharList = ({ onCharSelected }) => {
     setCharList((prevCharList) => [...prevCharList, ...newCharList]);
 
     setNewItemLoading(false);
-    setOffset((currentOffset) => currentOffset + 9);
-    setCharEnded(newCharList.length < 9);
+    setOffset((currentOffset) => currentOffset + CHARACTERS_PAGE_SIZE);
+    setCharEnded(newCharList.length < CHARACTERS_PAGE_SIZE);
   }, []);
 
   const onRequest = (offset = 0) => {
@@ -27,7 +28,7 @@ const CharList = ({ onCharSelected }) => {
 
   useEffect(() => {
     onRequest();
-  }, [onCharListLoaded]);
+  }, []);
 
   function onLoadMore() {
     setNewItemLoading(true);

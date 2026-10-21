@@ -1,4 +1,5 @@
 import { useHttp } from '../hooks/useHttp';
+import { CHARACTERS_PAGE_SIZE } from '../constants';
 
 const useMarvelService = () => {
   const { loading, req, error, clearError } = useHttp();
@@ -8,7 +9,7 @@ const useMarvelService = () => {
   const _baseOffset = 0;
 
   const getAllCharacters = async (offset = _baseOffset) => {
-    const res = await req(`${_apiBase}characters?limit=9&offset=${offset}&apikey=${_apiKey}`);
+    const res = await req(`${_apiBase}characters?limit=${CHARACTERS_PAGE_SIZE}&offset=${offset}&apikey=${_apiKey}`);
     return res.data.results.map(_getTransformCharacter);
   };
 
@@ -35,7 +36,7 @@ const useMarvelService = () => {
     error,
     getAllCharacters,
     getCharacter,
-    clearError
+    clearError,
   };
 };
 
