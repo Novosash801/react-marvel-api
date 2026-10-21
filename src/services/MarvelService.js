@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useHttp } from '../hooks/useHttp';
 import { CHARACTERS_PAGE_SIZE } from '../constants';
 
@@ -7,26 +8,6 @@ const useMarvelService = () => {
   const _apiBase = import.meta.env.VITE_MARVEL_API_BASE;
   const _apiKey = import.meta.env.VITE_MARVEL_API_KEY;
   const _baseOffset = 0;
-
-  const getAllCharacters = async (offset = _baseOffset) => {
-    const res = await req(`${_apiBase}characters?limit=${CHARACTERS_PAGE_SIZE}&offset=${offset}&apikey=${_apiKey}`);
-    return res.data.results.map(_getTransformCharacter);
-  };
-
-  const getCharacter = async (id) => {
-    const res = await req(`${_apiBase}characters/${id}?apikey=${_apiKey}`);
-    return _getTransformCharacter(res.data.results[0]);
-  };
-
-  const getAllComics = async (offset = 0) => {
-    const res = await req(`${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`);
-    return res.data.results.map(_transformComics);
-  };
-
-  const getComics = async (id) => {
-    const res = await req(`${_apiBase}comics/${id}?${_apiKey}`);
-    return _transformComics(res.data.results[0]);
-  };
 
   const _getTransformCharacter = (char) => {
     return {
@@ -52,6 +33,26 @@ const useMarvelService = () => {
       language: comics.textObjects[0]?.language || 'en-us',
       price: comics.prices[0].price ? `${comics.prices[0].price}$` : 'not available',
     };
+  };
+
+  const getAllCharacters = async (offset = _baseOffset) => {
+    const res = await req(`${_apiBase}characters?limit=${CHARACTERS_PAGE_SIZE}&offset=${offset}&apikey=${_apiKey}`);
+    return res.data.results.map(_getTransformCharacter);
+  };
+
+  const getCharacter = useCallback(async (id) => {
+    const res = await req(`${_apiBase}characters/${id}?apikey=${_apiKey}`);
+    return _getTransformCharacter(res.data.results[0]);
+  }, [req, _apiBase, _apiKey]);
+
+  const getAllComics = async (offset = 0) => {
+    const res = await req(`${_apiBase}comics?orderBy=issueNumber&limit=8&offset=${offset}&${_apiKey}`);
+    return res.data.results.map(_transformComics);
+  };
+
+  const getComics = async (id) => {
+    const res = await req(`${_apiBase}comics/${id}?${_apiKey}`);
+    return _transformComics(res.data.results[0]);
   };
 
   return {

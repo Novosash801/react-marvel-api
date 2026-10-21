@@ -8,20 +8,20 @@ const CharInfo = ({ charId }) => {
   const { loading, error, getCharacter, clearError } = useMarvelService();
 
   useEffect(() => {
+    async function getCharacterInfo(id) {
+      if (!id) {
+        return;
+      }
+
+      const charInfo = await getCharacter(id);
+      setChar(charInfo);
+    }
+
     clearError();
     if (charId) {
       getCharacterInfo(charId);
     }
-  }, [charId]);
-
-  async function getCharacterInfo(id) {
-    if (!id) {
-      return;
-    }
-
-    const charInfo = await getCharacter(id);
-    setChar(charInfo);
-  }
+  }, [charId, clearError, getCharacter]);
 
   const skeleton = char || loading || error ? null : <Skeleton />;
 
@@ -29,7 +29,7 @@ const CharInfo = ({ charId }) => {
     return <div className="char__info">{skeleton}</div>;
   }
 
-  const { id, name, description, thumbnail, homepage, wiki, comics } = char;
+  const { name, description, thumbnail, homepage, wiki, comics } = char;
   let imgNoneStyle = { objectFit: 'cover' };
   if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
     imgNoneStyle = { objectFit: 'contain' };
