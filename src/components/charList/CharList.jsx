@@ -1,60 +1,38 @@
 import './charList.scss';
-import { useCallback, useEffect, useState, useId } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ErrorMessage from '../ErrorImg/ErrorImg';
 import Spinner from '../spinner/Spinner';
 import useMarvelService from '../../services/MarvelService';
 
 const CharList = ({ onCharSelected }) => {
   const [charList, setCharList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [offset, setOffset] = useState(0);
   const [charEnded, setCharEnded] = useState(false);
   const [newItemLoading, setNewItemLoading] = useState(false);
   const [selectedCharacterId, setSelectedCharacterId] = useState(null);
 
-  const id = useId();
-
-  const marvelService = useMarvelService();
+  const { loading, error, getAllCharacters } = useMarvelService();
 
   const onCharListLoaded = useCallback((newCharList) => {
     setCharList((prevCharList) => [...prevCharList, ...newCharList]);
-    setLoading(false);
+
     setNewItemLoading(false);
     setOffset((currentOffset) => currentOffset + 9);
     setCharEnded(newCharList.length < 9);
   }, []);
 
-  // useEffect(() => {
-  //   let cancelled = false;
-
-  //   marvelService
-  //     .getAllCharacters()
-  //     .then((characters) => {
-  //       if (!cancelled) onCharListLoaded(characters);
-  //     })
-  //     .catch((requestError) => {
-  //       if (cancelled) return;
-  //       setError(requestError instanceof Error ? requestError.message : 'Неизвестная ошибка');
-  //       setLoading(false);
-  //     });
-
-  //   return () => {
-  //     cancelled = true;
-  //   };
-  // }, [onCharListLoaded]);
-
-  const onRequest = (offset) => {
-    setNewItemLoading(true);
-    setError('');
-    marvelService
-      .getAllCharacters(offset)
-      .then(onCharListLoaded)
-      .catch((requestError) => {
-        setError(requestError instanceof Error ? requestError.message : 'Неизвестная ошибка');
-        setNewItemLoading(false);
-      });
+  const onRequest = (offset = 0) => {
+    getAllCharacters(offset).then(onCharListLoaded);
   };
+
+  useEffect(() => {
+    onRequest();
+  }, [onCharListLoaded]);
+
+  function onLoadMore() {
+    setNewItemLoading(true);
+    onRequest(offset);
+  }
 
   function renderItems(arr) {
     const items = arr.map((item) => {
@@ -67,7 +45,7 @@ const CharList = ({ onCharSelected }) => {
         <li
           className={`char__item${selectedCharacterId === item.id ? ' char__item_selected' : ''}`}
           tabIndex={0}
-          key={id}
+          key={item.id}
           onClick={(e) => {
             console.log('item', item);
             onCharSelected(item.id);
@@ -100,8 +78,8 @@ const CharList = ({ onCharSelected }) => {
       <p role="alert">Не удалось загрузить персонажей: {error}</p>
     </>
   ) : null;
-  const spinner = loading ? <Spinner /> : null;
-  const content = !(loading || error) ? items : null;
+  const spinner = loading && charList.length === 0 ? <Spinner /> : null;
+  const content = charList.length > 0 || !(loading || error) ? items : null;
 
   return (
     <div className="char__list">
@@ -112,7 +90,7 @@ const CharList = ({ onCharSelected }) => {
         className="button button__main button__long"
         disabled={newItemLoading}
         style={{ display: charEnded ? 'none' : 'block' }}
-        onClick={() => onRequest(offset)}
+        onClick={onLoadMore}
       >
         <div className="inner">load more</div>
       </button>
