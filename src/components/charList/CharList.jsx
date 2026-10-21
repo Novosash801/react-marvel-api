@@ -48,7 +48,6 @@ const CharList = ({ onCharSelected }) => {
           tabIndex={0}
           key={item.id}
           onClick={(e) => {
-            console.log('item', item);
             onCharSelected(item.id);
             setSelectedCharacterId(item.id);
             e.currentTarget.focus();
