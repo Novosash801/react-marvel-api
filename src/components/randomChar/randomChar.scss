@@ -11,6 +11,9 @@
     column-gap: 30px;
   }
   &__img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 180px;
     height: 180px;
     object-fit: contain;

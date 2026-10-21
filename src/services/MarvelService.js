@@ -1,13 +1,13 @@
 import { useHttp } from '../hooks/useHttp';
 
 const useMarvelService = () => {
-  const { loading, req, error } = useHttp();
+  const { loading, req, error, clearError } = useHttp();
 
   const _apiBase = import.meta.env.VITE_MARVEL_API_BASE;
   const _apiKey = import.meta.env.VITE_MARVEL_API_KEY;
   const _baseOffset = 0;
 
-  const getAllCharacters = async (offset) => {
+  const getAllCharacters = async (offset = _baseOffset) => {
     const res = await req(`${_apiBase}characters?limit=9&offset=${offset}&apikey=${_apiKey}`);
     return res.data.results.map(_getTransformCharacter);
   };
@@ -35,6 +35,7 @@ const useMarvelService = () => {
     error,
     getAllCharacters,
     getCharacter,
+    clearError
   };
 };
 

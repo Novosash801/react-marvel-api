@@ -1,7 +1,6 @@
 import './charList.scss';
 import { useCallback, useEffect, useState, useId } from 'react';
-import MarvelService from '../../services/MarvelService';
-import ErrorMessage from '../errorMessage/ErrorMessage';
+import ErrorMessage from '../ErrorImg/ErrorImg';
 import Spinner from '../spinner/Spinner';
 import useMarvelService from '../../services/MarvelService';
 
@@ -26,24 +25,24 @@ const CharList = ({ onCharSelected }) => {
     setCharEnded(newCharList.length < 9);
   }, []);
 
-  useEffect(() => {
-    let cancelled = false;
+  // useEffect(() => {
+  //   let cancelled = false;
 
-    marvelService
-      .getAllCharacters()
-      .then((characters) => {
-        if (!cancelled) onCharListLoaded(characters);
-      })
-      .catch((requestError) => {
-        if (cancelled) return;
-        setError(requestError instanceof Error ? requestError.message : 'Неизвестная ошибка');
-        setLoading(false);
-      });
+  //   marvelService
+  //     .getAllCharacters()
+  //     .then((characters) => {
+  //       if (!cancelled) onCharListLoaded(characters);
+  //     })
+  //     .catch((requestError) => {
+  //       if (cancelled) return;
+  //       setError(requestError instanceof Error ? requestError.message : 'Неизвестная ошибка');
+  //       setLoading(false);
+  //     });
 
-    return () => {
-      cancelled = true;
-    };
-  }, [onCharListLoaded]);
+  //   return () => {
+  //     cancelled = true;
+  //   };
+  // }, [onCharListLoaded]);
 
   const onRequest = (offset) => {
     setNewItemLoading(true);

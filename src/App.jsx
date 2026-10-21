@@ -20,7 +20,7 @@ const App = () => {
         <RandomChar />
         <div className="char__content">
           <CharList onCharSelected={onCharSelected} />
-          <CharInfo charId={activeChar} />
+          {/* <CharInfo charId={activeChar} /> */}
         </div>
         <img className="bg-decoration" src={decoration} alt="vision" />
       </main>
