@@ -1,6 +1,6 @@
 import './charList.scss';
 import { useCallback, useEffect, useState } from 'react';
-import ErrorMessage from '../ErrorImg/ErrorImg';
+import ErrorMessage from '../errorImg/ErrorImg';
 import Spinner from '../spinner/Spinner';
 import useMarvelService from '../../services/MarvelService';
 import { CHARACTERS_PAGE_SIZE } from '../../constants';

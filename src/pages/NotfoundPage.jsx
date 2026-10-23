@@ -1,14 +1,7 @@
-import { Link } from 'react-router';
-import ErrorImg from '../components/ErrorImg/ErrorImg';
+import NotFound from '../components/notFound/NotFound';
 
-const NotfoundPage = () => {
-  return (
-    <div>
-      <ErrorImg />
-      <p>Page is not found</p>
-      <Link to={'/'}>Go back to main page</Link>
-    </div>
-  );
+const NotFoundPage = () => {
+  return <NotFound />;
 };
 
-export default NotfoundPage;
+export default NotFoundPage;
