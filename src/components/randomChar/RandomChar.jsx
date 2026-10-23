@@ -26,7 +26,7 @@ const RandomChar = () => {
 
   return (
     <div className="randomchar">
-      {loading ? <Spinner /> : <View char={char} />}
+      <div className="randomchar__content">{loading ? <Spinner /> : <View char={char} />}</div>{' '}
       <div className="randomchar__static">
         <p className="randomchar__title">
           Random character for today!

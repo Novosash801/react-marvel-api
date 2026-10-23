@@ -78,14 +78,14 @@ const CharList = ({ onCharSelected }) => {
       <p role="alert">Не удалось загрузить персонажей: {error}</p>
     </>
   ) : null;
-  const spinner = loading && charList.length === 0 ? <Spinner /> : null;
+  const spinner = loading || charList.length === 0 ? <Spinner /> : null;
   const content = charList.length > 0 || !(loading || error) ? items : null;
 
   return (
     <div className="char__list">
       {errorMessage}
-      {spinner}
       {content}
+      {spinner}
       <button
         className="button button__main button__long"
         disabled={newItemLoading}

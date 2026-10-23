@@ -15,17 +15,16 @@ const ComicsList = () => {
   const { loading, error, getAllComics } = useMarvelService();
 
   useEffect(() => {
-    onRequest(offset, true);
+    onRequest(offset);
   }, []);
 
-  const onRequest = (offset, initial) => {
-    initial ? setNewItemLoading(false) : setNewItemLoading(true);
+  const onRequest = (offset) => {
     getAllComics(offset).then(onComicsListLoaded);
   };
 
   const onComicsListLoaded = (newComicsList) => {
     let ended = false;
-    if (newComicsList.length < 8) {
+    if (newComicsList.length < 4) {
       ended = true;
     }
     setComicsList([...comicsList, ...newComicsList]);
@@ -58,8 +57,8 @@ const ComicsList = () => {
   return (
     <div className="comics__list">
       {errorMessage}
-      {spinner}
       {items}
+      {spinner}
       <button
         disabled={newItemLoading}
         style={{ display: comicsEnded ? 'none' : 'block' }}
