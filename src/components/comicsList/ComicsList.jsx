@@ -7,7 +7,7 @@ import './comicsList.scss';
 
 const ComicsList = () => {
   const [comicsList, setComicsList] = useState([]);
-  const [newItemLoading, setnewItemLoading] = useState(false);
+  const [newItemLoading, setNewItemLoading] = useState(false);
   const [offset, setOffset] = useState(0);
   const [comicsEnded, setComicsEnded] = useState(false);
 
@@ -18,7 +18,7 @@ const ComicsList = () => {
   }, []);
 
   const onRequest = (offset, initial) => {
-    initial ? setnewItemLoading(false) : setnewItemLoading(true);
+    initial ? setNewItemLoading(false) : setNewItemLoading(true);
     getAllComics(offset).then(onComicsListLoaded);
   };
 
@@ -28,7 +28,7 @@ const ComicsList = () => {
       ended = true;
     }
     setComicsList([...comicsList, ...newComicsList]);
-    setnewItemLoading(false);
+    setNewItemLoading(false);
     setOffset(offset + 8);
     setComicsEnded(ended);
   };

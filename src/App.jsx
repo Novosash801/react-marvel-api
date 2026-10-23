@@ -11,7 +11,9 @@ const App = () => {
           <Routes>
             <Route path="/" element={<MainPage />} />
             <Route path="/comics" element={<ComicsPage />} />
+            <Route path='*' />
           </Routes>
+
         </main>
       </div>
     </BrowserRouter>
