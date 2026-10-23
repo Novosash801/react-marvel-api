@@ -50,10 +50,10 @@ const useMarvelService = () => {
     return res.data.results.map(_transformComics);
   };
 
-  const getComics = async (id) => {
-    const res = await req(`${_apiBase}comics/${id}?${_apiKey}`);
+  const getComics = useCallback(async (id) => {
+    const res = await req(`${_apiBase}comics/${id}?apikey=${_apiKey}`);
     return _transformComics(res.data.results[0]);
-  };
+  }, [req, _apiBase, _apiKey]);
 
   return {
     loading,
